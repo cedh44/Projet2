@@ -1,6 +1,6 @@
 import { Participation } from "./Participation";
 
-export class Olympics {
+export class Olympic {
     id!: string;
     country!: string;
     participation!: Participation[];
