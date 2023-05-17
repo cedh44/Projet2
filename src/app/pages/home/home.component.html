@@ -1,4 +1,14 @@
-<h2>Olympic games app</h2>
+<h2>Medals per country</h2>
 <hr />
-<!-- <p>{{ (olympics$ | async)?.length }} data loaded</p> -->
-<p>{{ (olympics).length }} data loaded</p>
+
+<div>Number of JOs : </div>
+<div>Number of countries : {{ (this.olympics).length }}</div>
+
+<canvas baseChart
+  [type]="'pie'"
+  [datasets]="pieChartDatasets"
+  [labels]="pieChartLabels"
+  [options]="pieChartOptions"
+  [plugins]="pieChartPlugins"
+  [legend]="pieChartLegend">
+</canvas>

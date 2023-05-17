@@ -9,7 +9,7 @@ import { Olympic } from '../models/Olympic';
 })
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<Olympic[]>({} as Olympic[]); //BehaviorSubject : retourne la dernière valeur de son état
+  private olympics$ = new BehaviorSubject({} as Olympic[]); //BehaviorSubject : retourne la dernière valeur de son état
 
   constructor(private http: HttpClient) {}
 
