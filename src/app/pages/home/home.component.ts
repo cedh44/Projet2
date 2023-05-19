@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, of, takeUntil } from 'rxjs';
+import { Observable, Subject, from, observable, of, takeUntil } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ChartOptions } from 'chart.js';
 import { Participation } from 'src/app/core/models/Participation';
+import { zipWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
     responsive: false,
   };
   public pieChartLabels!: string[];
-  public pieChartDatasets!: [ { data: number[] } ];
+  public pieChartDatasets!: [{label: string,data: number[],backgroundColor: string[]}];
   public pieChartLegend!:boolean;
   public pieChartPlugins!: [];
 
@@ -51,27 +52,29 @@ export class HomeComponent implements OnInit {
   // Ajoute les données du chart pie (labels et datas)
   fillChart(): void {
     this.pieChartLabels = this.getCountriesToDisplay();
-    this.pieChartDatasets = this.getTotalOfMedals();
+    this.pieChartDatasets = this.getLabelDatasAndColorsToDisplay();
     this.numberOfCountries = this.olympics.length;
   }
 
   getCountriesToDisplay(): string[]{ 
+    const toto = this.olympics.map(olympic => olympic.country);
     if(this.olympics != undefined) return this.olympics.map(olympic => olympic.country);
     else return [];
   }
-
-  getTotalOfMedals(): any{
-    //let medalsToDisplay = [{ data: [] }];
-    // Pour chaque élément de olmpics, additioner participation.medalsCount
-    //medalsToDisplay.push(50);
-    //medalsToDisplay.push(96);
-    //return medalsToDisplay;
-    //return [ { data: [ 300, 500, 100 ] } ];
+  
+  getLabelDatasAndColorsToDisplay(): [{label: string,data: number[],backgroundColor: string[]}]{
     return [{
       label: "🥇",
-      data: [20, 40, 13, 35, 20, 38],
+      data: this.getTotalOfMedals(),
       backgroundColor: ['#8D6266', '#BCCAE4', '#C5DFEF', '#93819F', '#8EA0D6', '#714052']
    }]
+  }
+
+  getTotalOfMedals(): number[]{  
+    return this.olympics
+    .map(olympic => {
+      return olympic.participations.reduce((acc,obj) => acc + obj.medalsCount,0)
+    });
   }
 
   ngOnDestroy(): void {
