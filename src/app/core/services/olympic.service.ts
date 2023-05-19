@@ -29,5 +29,17 @@ export class OlympicService {
   getOlympics(): Observable<Olympic[]> {
     return this.olympics$.asObservable();
   }
+
+  getCountries(olympics: Olympic[]): string[]{
+    if(olympics != undefined) return olympics.map(olympics => olympics.country);
+    else return [];
+  }
+
+  getTotalOfMedals(olympics: Olympic[]): number[]{  
+    return olympics
+    .map(olympic => {
+      return olympic.participations.reduce((accumulator,participation) => accumulator + participation.medalsCount,0)
+    });
+  }
   
 }

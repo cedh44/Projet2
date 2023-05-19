@@ -51,30 +51,17 @@ export class HomeComponent implements OnInit {
 
   // Ajoute les données du chart pie (labels et datas)
   fillChart(): void {
-    this.pieChartLabels = this.getCountriesToDisplay();
+    this.pieChartLabels = this.olympicService.getCountries(this.olympics);
     this.pieChartDatasets = this.getLabelDatasAndColorsToDisplay();
     this.numberOfCountries = this.olympics.length;
   }
 
-  getCountriesToDisplay(): string[]{ 
-    const toto = this.olympics.map(olympic => olympic.country);
-    if(this.olympics != undefined) return this.olympics.map(olympic => olympic.country);
-    else return [];
-  }
-  
   getLabelDatasAndColorsToDisplay(): [{label: string,data: number[],backgroundColor: string[]}]{
     return [{
       label: "🥇",
-      data: this.getTotalOfMedals(),
+      data: this.olympicService.getTotalOfMedals(this.olympics),
       backgroundColor: ['#8D6266', '#BCCAE4', '#C5DFEF', '#93819F', '#8EA0D6', '#714052']
    }]
-  }
-
-  getTotalOfMedals(): number[]{  
-    return this.olympics
-    .map(olympic => {
-      return olympic.participations.reduce((acc,obj) => acc + obj.medalsCount,0)
-    });
   }
 
   ngOnDestroy(): void {
