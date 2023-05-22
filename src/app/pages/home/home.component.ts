@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { ArcElement, ChartEvent, ChartOptions } from 'chart.js';
+import { ChartOptions } from 'chart.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -24,9 +25,11 @@ export class HomeComponent implements OnInit {
   public pieChartDatasets!: [{label: string,data: number[],backgroundColor: string[]}];
   public pieChartLegend!:boolean;
   public pieChartPlugins!: [];
-  public urlDetail = "/details";
+  public urlDetail = "detailcountry";
 
-  constructor(private olympicService: OlympicService) {}
+  constructor(private olympicService: OlympicService,
+    private router: Router
+    ) {}
 
   ngOnInit(): void {
     this.destroy$ = new Subject<boolean>();
@@ -48,7 +51,7 @@ export class HomeComponent implements OnInit {
     this.pieChartPlugins = [];
   }
 
-  // Ajoute les données du chart pie (labels et datas)
+  // Ajoute les données des labels et du chart pie (labels et datas)
   fillChart(): void {
     this.pieChartLabels = this.olympicService.getCountries(this.olympics);
     this.pieChartDatasets = this.getLabelDatasAndColorsToDisplay();
@@ -66,6 +69,7 @@ export class HomeComponent implements OnInit {
 
   public chartClicked(e:any):void {
     console.log(`redirection vers ${this.urlDetail}/${e.active[0].index}`)
+    this.router.navigateByUrl(this.urlDetail+'/'+e.active[0].index);
   }
 
   ngOnDestroy(): void {
