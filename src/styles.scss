@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+h1{
+    color: white;
+    background-color: rgb(57,129,141);
+    border-radius: 10px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 300px;
+}
+
+.containerNumberOfJOsCountries {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.labelNumberofJOsCountries {
+    color: gray;
+    background-color: white;
+    border-radius: 10px;
+    border: 2px rgb(57,129,141) solid;
+    padding: 5px 10px;
+    width: auto;
+    text-align: center;
+}
+
+.boldBlackTotal
+{
+    font-weight:800;
+    color: black;
+}
+
+.chart{
+    margin: auto;
+    width: 30%;
+}

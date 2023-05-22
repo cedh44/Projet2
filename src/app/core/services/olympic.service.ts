@@ -41,5 +41,10 @@ export class OlympicService {
       return olympic.participations.reduce((accumulator,participation) => accumulator + participation.medalsCount,0)
     });
   }
+
+  getMaxParticipations(olympics : Olympic[]): number{
+    return Math.max(...(olympics.map(olympic => 
+      olympic.participations).map(participation => participation.length))); 
+  }
   
 }

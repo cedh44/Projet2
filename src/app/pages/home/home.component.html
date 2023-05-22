@@ -1,14 +1,22 @@
-<h2>Medals per country</h2>
-<hr />
 
-<div>Number of JOs : </div>
-<div>Number of countries : {{ (this.olympics).length }}</div>
+  <main>
+    <div>
+      <h1 class="title">Medals per country</h1>
+    </div>
 
-<canvas baseChart
-  [type]="'pie'"
-  [datasets]="pieChartDatasets"
-  [labels]="pieChartLabels"
-  [options]="pieChartOptions"
-  [plugins]="pieChartPlugins"
-  [legend]="pieChartLegend">
-</canvas>
+    <div class="containerNumberOfJOsCountries">
+      <p class="labelNumberofJOsCountries">Number of JOs<br><span class="boldBlackTotal">{{this.numberOfJOs}}</span></p>
+      <p class="labelNumberofJOsCountries">Number of countries<br><span class="boldBlackTotal">{{ (this.olympics).length }}</span></p>
+    </div>
+    <div class="chart">
+      <canvas baseChart
+        [type]="'pie'"
+        [datasets]="pieChartDatasets"
+        [labels]="pieChartLabels"
+        [options]="pieChartOptions"
+        [plugins]="pieChartPlugins"
+        [legend]="pieChartLegend"
+        (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+  </main>
