@@ -39,3 +39,10 @@ h1{
     margin: auto;
     width: 30%;
 }
+
+@media screen and (max-width: 996px) {
+    .chart{
+        margin: auto;
+        width: 50%;
+    }
+}
