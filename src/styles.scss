@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body{
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 h1{
@@ -11,7 +11,7 @@ h1{
     margin: auto;
     margin-bottom: 10px;
     padding: 10px;
-    width: 300px;
+    width: 320px;
 }
 
 .containerNumberOfJOsCountries {
@@ -37,12 +37,16 @@ h1{
 
 .chart{
     margin: auto;
-    width: 30%;
+    width: 50%;
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 700px) {
     .chart{
         margin: auto;
-        width: 50%;
+        width: 80%;
+    }
+
+    body{
+        font-size: 0.5em;
     }
 }
