@@ -20,7 +20,7 @@ export class OlympicService {
         // TODO: improve error handling
         console.error(error);
         // can be useful to end loading state and let the user know something went wrong
-        this.olympics$.next({} as Olympic[]);
+        this.olympics$.next([] as Olympic[]); // {} -> objet vide
         return caught;
       })
     );
@@ -31,8 +31,7 @@ export class OlympicService {
   }
 
   getCountries(olympics: Olympic[]): string[]{
-    if(olympics != undefined) return olympics.map(olympics => olympics.country);
-    else return [];
+    return olympics.map(olympics => olympics.country);
   }
 
   getTotalOfMedals(olympics: Olympic[]): number[]{  

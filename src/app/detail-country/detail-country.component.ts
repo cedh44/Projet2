@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, catchError, takeUntil } from 'rxjs';
+import { Subject, catchError, takeUntil, tap } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChartConfiguration, ChartEvent, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-detail-country',
@@ -43,8 +42,17 @@ export class DetailCountryComponent implements OnInit {
         console.error(error);
         // can be useful to end loading state and let the user know something went wrong
         alert(`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${error}`);
+        this.destroy$.next(true);
+        //Redirection vers la page not found
+        this.router.navigateByUrl('**');
         return caught;
-      })
+      }),
+      tap(olympicFromJson => {
+        //Pas d'olympic retourné -> redirection vers la page not found
+        if(olympicFromJson[this.idCountrySelected] === undefined) this.router.navigateByUrl('**');
+      }
+        
+      )
       ).subscribe(olympicsFromJson => {
         this.olympics = olympicsFromJson;
         this.fillChart();
@@ -87,8 +95,6 @@ export class DetailCountryComponent implements OnInit {
             },
           },
         };
-
-
     }
 
     onContinue(): void{

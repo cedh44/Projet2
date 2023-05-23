@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, catchError, takeUntil } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ChartOptions } from 'chart.js';
@@ -36,12 +36,22 @@ export class HomeComponent implements OnInit {
     this.configChart();
     
     this.olympicService.getOlympics().pipe(
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
+      catchError((error, caught) => {
+        // TODO: improve error handling
+        console.error(error);
+        // can be useful to end loading state and let the user know something went wrong
+        alert(`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${error}`);
+        this.destroy$.next(true);
+        this.router.navigateByUrl('**');
+        return caught;
+      })
       ).subscribe(olympicsFromJson => {
-        //console.log(`olympicsFromJson = ${olympicsFromJson}`);
-        //if(olympicsFromJson != {}) this.olympics = olympicsFromJson; // solutionner ici
-        this.olympics = olympicsFromJson;
-        this.fillChart();
+        console.log(`olympicsFromJson = ${olympicsFromJson}`);
+        if(Array.isArray(olympicsFromJson)){
+          this.olympics = olympicsFromJson;
+          this.fillChart();
+        }
       });
   }
 
@@ -68,7 +78,8 @@ export class HomeComponent implements OnInit {
   }
 
   public chartClicked(e:any):void {
-    console.log(`redirection vers ${this.urlDetail}/${e.active[0].index}`)
+    //let idCountryParamter: number = e.active[0].index;
+    //idCountryParamter++;
     this.router.navigateByUrl(this.urlDetail+'/'+e.active[0].index);
   }
 
