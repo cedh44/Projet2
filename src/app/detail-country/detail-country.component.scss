@@ -1,0 +1,25 @@
+.lien-retour {
+    width: 100%;
+    text-align: center;
+}
+
+button {
+    background-color: transparent;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    margin: 25px;
+    border: none;
+    box-shadow: rgb(57,129,141) 3px 3px 7px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.chart-line{
+    margin: 50px;
+    display: block;
+}
+
+@media screen and (max-width: 700px) {
+    .chart-line{
+        margin: auto;
+    }
+}

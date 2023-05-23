@@ -46,5 +46,28 @@ export class OlympicService {
     return Math.max(...(olympics.map(olympic => 
       olympic.participations).map(participation => participation.length))); 
   }
+
+  getCountryByIdCountry(olympics : Olympic[], id: number): string{
+    return olympics[id].country;
+  }
+
+  getNumberOfEntriesByIdCountry(olympics : Olympic[], id: number): number{
+    return olympics[id].participations.length;
+  }
   
+  getTotalNumberOfMedalsByIdCountry(olympics : Olympic[], id: number): number{
+    return olympics[id].participations.reduce((accumulator,participation) => accumulator + participation.medalsCount,0);
+  }
+
+  getTotalNumberOfAthletesByIdCountry(olympics : Olympic[], id: number): number{
+    return olympics[id].participations.reduce((accumulator,participation) => accumulator + participation.athleteCount,0);
+  }
+
+  getYearsByIdCountry(olympics : Olympic[], id: number): number[]{
+    return olympics[id].participations.map(participation => participation.year);
+  }
+
+  getMedalsByIdCountry(olympics : Olympic[], id: number): number[]{
+    return olympics[id].participations.map(participation => participation.medalsCount);
+  }
 }
