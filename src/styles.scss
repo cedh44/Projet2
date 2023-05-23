@@ -14,12 +14,12 @@ h1{
     width: 320px;
 }
 
-.containerNumberOfJOsCountries {
+.container-label-datas-to-display {
     display: flex;
     justify-content: space-evenly;
 }
 
-.labelNumberofJOsCountries {
+.label-datas-to-display {
     color: gray;
     background-color: white;
     border-radius: 10px;
@@ -29,24 +29,18 @@ h1{
     text-align: center;
 }
 
-.boldBlackTotal
+.bold-black-totalsandnumbers
 {
     font-weight:800;
     color: black;
 }
 
-.chart{
-    margin: auto;
-    width: 50%;
-}
-
 @media screen and (max-width: 700px) {
-    .chart{
-        margin: auto;
-        width: 80%;
-    }
-
     body{
         font-size: 0.5em;
+    }
+
+    h1{
+        width: 160px;
     }
 }
