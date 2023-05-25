@@ -3,7 +3,7 @@ import { Subject, catchError, takeUntil, tap } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChartConfiguration, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-detail-country',
@@ -16,12 +16,13 @@ export class DetailCountryComponent implements OnInit {
   private destroy$!: Subject<boolean>;
 
   private idCountrySelected!: number;
+  // Variables pour affichage des données dans la page détail
   public country!: string;
   public numberOfEntries!: number;
   public totalNumberOfMedals!: number;
   public totalNumberOfAthletes!: number;
 
-  //Chart Line
+  // Variable pour le chart line
   public lineChartData!: ChartConfiguration['data'];
   public lineChartOptions!: any;
   public lineChartType: ChartType = 'line';
@@ -33,8 +34,10 @@ export class DetailCountryComponent implements OnInit {
 
   ngOnInit(): void {
     this.destroy$ = new Subject<boolean>();
+    // Récupération de l'id du tableau des pays
     this.idCountrySelected = +this.route.snapshot.params['id'];
     
+    // Récupération des données du fichier json (grâce à l'observable)
     this.olympicService.getOlympics().pipe(
       takeUntil(this.destroy$),
       catchError((error, caught) => {
@@ -48,13 +51,14 @@ export class DetailCountryComponent implements OnInit {
         return caught;
       }),
       tap(olympicFromJson => {
-        //Pas d'olympic retourné -> redirection vers la page not found
+        // Pas d'olympic retourné -> redirection vers la page not found
         if(olympicFromJson[this.idCountrySelected] === undefined) this.router.navigateByUrl('**');
       }
         
       )
       ).subscribe(olympicsFromJson => {
         this.olympics = olympicsFromJson;
+        //Alimentation du chart line
         this.fillChart();
       });
   }
@@ -65,10 +69,11 @@ export class DetailCountryComponent implements OnInit {
       this.numberOfEntries = this.olympicService.getNumberOfEntriesByIdCountry(this.olympics, this.idCountrySelected);
       this.totalNumberOfMedals = this.olympicService.getTotalNumberOfMedalsByIdCountry(this.olympics, this.idCountrySelected);
       this.totalNumberOfAthletes = this.olympicService.getTotalNumberOfAthletesByIdCountry(this.olympics, this.idCountrySelected);
-      //Chart Line
+      // chart line
       this.lineChartData = {
         datasets: [
           {
+            // Données de l'axe Y du chart line
             data: this.olympicService.getMedalsByIdCountry(this.olympics, this.idCountrySelected),
             label: this.country,
             backgroundColor: 'rgba(57,129,141,0.2)',
@@ -79,6 +84,7 @@ export class DetailCountryComponent implements OnInit {
             pointHoverBorderColor: 'rgba(57,129,141,0.8)',
             fill: 'origin',
           }],
+        // Données de l'axe X du chart line
         labels: this.olympicService.getYearsByIdCountry(this.olympics, this.idCountrySelected),
         };
         this.lineChartOptions = {
@@ -97,6 +103,7 @@ export class DetailCountryComponent implements OnInit {
         };
     }
 
+    // Retour vers le dashboard
     onContinue(): void{
       this.router.navigateByUrl('');
     }

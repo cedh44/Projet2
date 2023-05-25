@@ -14,10 +14,10 @@ export class HomeComponent implements OnInit {
   public olympics: Olympic[] = [];
   // Pour le subscribe/unsubsribe
   private destroy$!: Subject<boolean>;
-
+  // Variables pour affichage des données dans le dashboard
   public numberOfJOs!: number;
   public numberOfCountries!: number;
-  // Pie
+  // Variables nécessaires pour le chart de type pie
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: true
   };
@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
     this.destroy$ = new Subject<boolean>();
     this.configChart();
     
+    // Récupération des données du fichier json (grâce à l'observable)
     this.olympicService.getOlympics().pipe(
       takeUntil(this.destroy$),
       catchError((error, caught) => {
@@ -47,9 +48,9 @@ export class HomeComponent implements OnInit {
         return caught;
       })
       ).subscribe(olympicsFromJson => {
-        console.log(`olympicsFromJson = ${olympicsFromJson}`);
         if(Array.isArray(olympicsFromJson)){
           this.olympics = olympicsFromJson;
+          // Alimentation du chart pie
           this.fillChart();
         }
       });
@@ -69,6 +70,7 @@ export class HomeComponent implements OnInit {
     this.numberOfJOs = this.olympicService.getMaxParticipations(this.olympics);
   }
 
+  // Récupère les données à afficher dans le pie avec les couleurs
   getLabelDatasAndColorsToDisplay(): [{label: string,data: number[],backgroundColor: string[]}]{
     return [{
       label: "🥇",
@@ -77,14 +79,13 @@ export class HomeComponent implements OnInit {
    }]
   }
 
+  // Lors du clic sur un pays dans le pie, redirection vers la page Détail
   public chartClicked(e:any):void {
-    //let idCountryParamter: number = e.active[0].index;
-    //idCountryParamter++;
     this.router.navigateByUrl(this.urlDetail+'/'+e.active[0].index);
   }
 
   ngOnDestroy(): void {
-    //Unsubscribe de l'observable (éviter fuites mémoire)
+    // Unsubscribe de l'observable (éviter fuites mémoire)
     this.destroy$.next(true);
   }  
 }
