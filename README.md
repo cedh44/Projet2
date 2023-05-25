@@ -10,7 +10,7 @@ Développé sous Angular.
 1. Clonez le dépôt git avec la commande suivante dans un terminal : `git clone https://github.com/cedh44/Projet2.git`
 2. Installez les dépendances depuis le répertoire projet avec la commande : `npm install`
 
-## Development server
+## Lancer l'application
 
 Dans un terminal, lancez le serveur avec la commande suivante : `ng serve`
 Dans un navigateur, l'application est accessible à l'url suivante : http://localhost:4200/
