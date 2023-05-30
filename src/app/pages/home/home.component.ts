@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   public pieChartDatasets!: [{label: string,data: number[],backgroundColor: string[]}];
   public pieChartLegend!:boolean;
   public pieChartPlugins!: [];
-  public urlDetail = "detailcountry";
+  private urlDetail = "detailcountry";
 
   constructor(private olympicService: OlympicService,
     private router: Router
