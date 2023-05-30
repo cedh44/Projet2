@@ -40,12 +40,6 @@ export class HomeComponent implements OnInit {
     // Récupération des données du fichier json (grâce à l'observable)
     this.olympicService.getOlympics().pipe(
       takeUntil(this.destroy$),
-      catchError((err) => {
-        console.error(err); // Affiche le message d'erreur dans la console
-        this.error = (`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${err.message}`);
-        this.destroy$.next(true);
-        return throwError(() => new Error(err.message));
-      })
       ).subscribe(olympicsFromJson => {
         if(Array.isArray(olympicsFromJson)){
           this.olympics = olympicsFromJson;

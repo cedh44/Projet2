@@ -1,6 +1,4 @@
   <main>
-    <p class="errorText" *ngIf="error">{{ error }}</p>
-    <section *ngIf="!error">
       <div>
         <h1 class="title">Medals per country</h1>
       </div>
@@ -21,5 +19,4 @@
           (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-    </section>
   </main>

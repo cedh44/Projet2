@@ -11,7 +11,6 @@ import { Olympic } from '../models/Olympic';
 export class OlympicService {
   private olympicUrl = './assets/mock/olympic.json';
   private olympics$ = new BehaviorSubject({} as Olympic[]); //BehaviorSubject : retourne la dernière valeur de son état
-  private error = null;
 
   constructor(private http: HttpClient) {}
 
@@ -19,10 +18,9 @@ export class OlympicService {
   loadInitialData() {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)), //Next sert à faire émettre l'objet
-      catchError((error) => { //Gestion de l'erreur ci dessous
+      catchError((error) => { //Message d'erreur ci dessous
+        alert(`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${error.message}`);
         console.error(error);
-        this.error = error;
-        this.olympics$.next([]);
         return throwError(() => new Error(error.message));
       })
     );

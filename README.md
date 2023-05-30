@@ -17,7 +17,7 @@ Dans un navigateur, l'application est accessible à l'url suivante : http://loca
 
 ## Build
 
-Pour compiler l'application, lancez la commande suivante dans un terminal : `ng serve`
+Pour compiler l'application, lancez la commande suivante dans un terminal : `ng build`
 Les fichiers sont générés dans /dist.
 
 ## Technologies

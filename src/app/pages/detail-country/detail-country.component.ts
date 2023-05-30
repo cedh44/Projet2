@@ -14,8 +14,6 @@ export class DetailCountryComponent implements OnInit {
   public olympics: Olympic[] = [];
   // Pour le subscribe/unsubsribe
   private destroy$!: Subject<boolean>;
-  // Message d'erreur
-  public error!: String;
   // Id du country dans le tableau d'olympics
   private idCountrySelected!: number;
   // Variables pour affichage des données dans la page détail
@@ -42,19 +40,11 @@ export class DetailCountryComponent implements OnInit {
     // Récupération des données du fichier json (grâce à l'observable)
     this.olympicService.getOlympics().pipe(
       takeUntil(this.destroy$),
-      catchError((err) => {
-        console.error(err); // Affiche le message d'erreur dans la console
-        this.error = (`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${err.message}`);
-        this.destroy$.next(true);
-        return throwError(() => new Error(err.message));
-      }),
       tap(olympicFromJson => {
         // Pas d'olympic retourné -> redirection vers la page not found
         if(olympicFromJson[this.idCountrySelected] === undefined) this.router.navigateByUrl('**');
-      }
-        
-      )
-      ).subscribe(olympicsFromJson => {
+      }))
+      .subscribe(olympicsFromJson => {
         this.olympics = olympicsFromJson;
         //Alimentation du chart line
         this.fillChart();
