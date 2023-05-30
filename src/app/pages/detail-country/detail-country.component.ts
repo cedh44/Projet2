@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, catchError, takeUntil, tap } from 'rxjs';
+import { Subject, catchError, takeUntil, tap, throwError } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,9 @@ export class DetailCountryComponent implements OnInit {
   public olympics: Olympic[] = [];
   // Pour le subscribe/unsubsribe
   private destroy$!: Subject<boolean>;
-
+  // Message d'erreur
+  public error!: String;
+  // Id du country dans le tableau d'olympics
   private idCountrySelected!: number;
   // Variables pour affichage des données dans la page détail
   public country!: string;
@@ -25,7 +27,7 @@ export class DetailCountryComponent implements OnInit {
   // Variable pour le chart line
   public lineChartData!: ChartConfiguration['data'];
   public lineChartOptions!: any;
-  public lineChartType: ChartType = 'line';
+  public lineChartType: ChartType = 'line'; // Type de graphique line
 
   constructor(private olympicService: OlympicService,
     private route: ActivatedRoute,
@@ -40,15 +42,11 @@ export class DetailCountryComponent implements OnInit {
     // Récupération des données du fichier json (grâce à l'observable)
     this.olympicService.getOlympics().pipe(
       takeUntil(this.destroy$),
-      catchError((error, caught) => {
-        // TODO: improve error handling
-        console.error(error);
-        // can be useful to end loading state and let the user know something went wrong
-        alert(`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${error}`);
+      catchError((err) => {
+        console.error(err); // Affiche le message d'erreur dans la console
+        this.error = (`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${err.message}`);
         this.destroy$.next(true);
-        //Redirection vers la page not found
-        this.router.navigateByUrl('**');
-        return caught;
+        return throwError(() => new Error(err.message));
       }),
       tap(olympicFromJson => {
         // Pas d'olympic retourné -> redirection vers la page not found
@@ -90,12 +88,12 @@ export class DetailCountryComponent implements OnInit {
         this.lineChartOptions = {
           elements: {
             line: {
-              tension: 0,
+              tension: 0, //Pour la tension de la courbe, ici 0 pour avoir des lignes droites
             },
           },
           scales: {},
           plugins: {
-            legend: { display: false },
+            legend: { display: false }, //Affiche ou non la légende du graphique
             annotation: {
               annotations: [],
             },

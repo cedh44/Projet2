@@ -1,22 +1,25 @@
   <main>
-    <div>
-      <h1 class="title">Medals per country</h1>
-    </div>
+    <p class="errorText" *ngIf="error">{{ error }}</p>
+    <section *ngIf="!error">
+      <div>
+        <h1 class="title">Medals per country</h1>
+      </div>
 
-    <div class="container-label-datas-to-display">
-      <p class="label-datas-to-display">Number of JOs<br><span class="bold-black-totalsandnumbers">{{this.numberOfJOs}}</span></p>
-      <p class="label-datas-to-display">Number of countries<br><span class="bold-black-totalsandnumbers">{{ (this.olympics).length }}</span></p>
-    </div>
- 
-    <div class="chart-pie">
-      <canvas baseChart
-        [type]="'pie'"
-        [datasets]="pieChartDatasets"
-        [labels]="pieChartLabels"
-        [options]="pieChartOptions"
-        [plugins]="pieChartPlugins"
-        [legend]="pieChartLegend"
-        (chartClick)="chartClicked($event)">
-      </canvas>
-    </div>
+      <div class="container-label-datas-to-display">
+        <p class="label-datas-to-display">Number of JOs<br><span class="bold-black-totalsandnumbers">{{this.numberOfJOs}}</span></p>
+        <p class="label-datas-to-display">Number of countries<br><span class="bold-black-totalsandnumbers">{{ (this.olympics).length }}</span></p>
+      </div>
+  
+      <div class="chart-pie">
+        <canvas baseChart
+          [type]="'pie'"
+          [datasets]="pieChartDatasets"
+          [labels]="pieChartLabels"
+          [options]="pieChartOptions"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend"
+          (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+    </section>
   </main>

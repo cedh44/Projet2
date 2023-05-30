@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, catchError, takeUntil } from 'rxjs';
+import { Subject, catchError, takeUntil, throwError } from 'rxjs';
 import { Olympic } from 'src/app/core/models/Olympic';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { ChartOptions } from 'chart.js';
@@ -14,6 +14,8 @@ export class HomeComponent implements OnInit {
   public olympics: Olympic[] = [];
   // Pour le subscribe/unsubsribe
   private destroy$!: Subject<boolean>;
+  // Message d'erreur
+  public error!: String;
   // Variables pour affichage des données dans le dashboard
   public numberOfJOs!: number;
   public numberOfCountries!: number;
@@ -38,14 +40,11 @@ export class HomeComponent implements OnInit {
     // Récupération des données du fichier json (grâce à l'observable)
     this.olympicService.getOlympics().pipe(
       takeUntil(this.destroy$),
-      catchError((error, caught) => {
-        // TODO: improve error handling
-        console.error(error);
-        // can be useful to end loading state and let the user know something went wrong
-        alert(`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${error}`);
+      catchError((err) => {
+        console.error(err); // Affiche le message d'erreur dans la console
+        this.error = (`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${err.message}`);
         this.destroy$.next(true);
-        this.router.navigateByUrl('**');
-        return caught;
+        return throwError(() => new Error(err.message));
       })
       ).subscribe(olympicsFromJson => {
         if(Array.isArray(olympicsFromJson)){
