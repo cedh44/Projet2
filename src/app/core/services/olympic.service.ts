@@ -21,7 +21,7 @@ export class OlympicService {
       catchError((error) => { //Message d'erreur ci dessous
         alert(`Une erreur est survenue. Veuillez indiquer cette erreur au support: ${error.message}`);
         console.error(error);
-        return throwError(() => new Error(error.message));
+        return throwError(() => new Error(error));
       })
     );
   }
